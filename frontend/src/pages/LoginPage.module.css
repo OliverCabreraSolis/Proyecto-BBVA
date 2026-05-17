@@ -1,0 +1,272 @@
+.container {
+  min-height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  font-size: 1.8rem;
+  color: #004A97;
+  cursor: pointer;
+}
+
+.navLink {
+  color: #004A97;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  max-width: 1000px;
+  margin: 2rem auto;
+  width: 100%;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+/* Columna izquierda */
+.formCol {
+  flex: 1;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  color: #1a1a2e;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #636e72;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2d3436;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #2d3436;
+  background: white;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #004A97;
+  box-shadow: 0 0 0 3px rgba(0,74,151,0.1);
+}
+
+.input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #004A97;
+  box-shadow: 0 0 0 3px rgba(0,74,151,0.1);
+}
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #dfe6e9;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #004A97;
+  border-radius: 4px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.checkboxActivo {
+  background: #004A97;
+}
+
+.checkIcono {
+  width: 14px;
+  height: 14px;
+  color: white;
+}
+
+.checkLabel {
+  color: #2d3436;
+  font-size: 0.95rem;
+}
+
+.passwordWrapper {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.passwordInput {
+  width: 100%;
+  padding: 0.85rem 3rem 0.85rem 1rem;
+  border: 1.5px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.passwordInput:focus {
+  outline: none;
+  border-color: #004A97;
+  box-shadow: 0 0 0 3px rgba(0,74,151,0.1);
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.eyeIcono {
+  width: 20px;
+  height: 20px;
+  color: #004A97;
+}
+
+.olvidaste {
+  color: #004A97;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  display: block;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Columna derecha */
+.promoCol {
+  flex: 1;
+  background: #f0f4ff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.promoBadge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: #FFD700;
+  color: #1a1a2e;
+  font-weight: 700;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+.lockWrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #004A97;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.lockIcono {
+  width: 40px;
+  height: 40px;
+  color: white;
+}
+
+.promoTitle {
+  color: #1a1a2e;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.promoDesc {
+  color: #636e72;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.sslBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #eafaf6;
+  color: #00b894;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.sslIcono {
+  width: 16px;
+  height: 16px;
+}
+
+.telefono {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: #636e72;
+}
+
+.telefonoNum {
+  color: #004A97;
+  font-weight: 600;
+} 
