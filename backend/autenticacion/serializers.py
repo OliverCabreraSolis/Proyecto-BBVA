@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuarios
+from .models import Dcliente
 import re
 
 VALIDACIONES_DOCUMENTO = {
@@ -77,5 +77,42 @@ class LoginSerializer(serializers.Serializer):
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuarios
-        fields = ['id', 'nombre', 'apellido', 'dni', 'email', 'created_at']
+        model = Dcliente
+        fields = ['pkcliente', 'nombre', 'apellidopaterno', 'apellidomaterno', 'numerodocumento', 'correo', 'celular']
+
+        # Agregar estos al final del archivo
+
+class LoginHomebankingSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+class CuentaAhorroSerializer(serializers.Serializer):
+    pkcuentaahorro = serializers.IntegerField()
+    numerocuenta = serializers.CharField()
+    tipo = serializers.CharField()
+    moneda = serializers.CharField()
+    saldocapital = serializers.DecimalField(max_digits=12, decimal_places=2)
+
+class CreditoVehicularSerializer(serializers.Serializer):
+    pkcuentacredito = serializers.IntegerField()
+    montoprestamo = serializers.DecimalField(max_digits=12, decimal_places=2)
+    saldocapital = serializers.DecimalField(max_digits=12, decimal_places=2)
+    tasacompensatoria = serializers.DecimalField(max_digits=5, decimal_places=2)
+    tasamoratoria = serializers.DecimalField(max_digits=5, decimal_places=2)
+    diasatraso = serializers.IntegerField()
+    fechadesembolso = serializers.DateField()
+    condicion = serializers.CharField()
+    producto = serializers.CharField()
+    marca = serializers.CharField()
+    modelo = serializers.CharField()
+    placa = serializers.CharField()
+    anio = serializers.IntegerField()
+
+class CuotaSerializer(serializers.Serializer):
+    nrocuota = serializers.IntegerField()
+    fechavencimiento = serializers.DateField()
+    amortizacion = serializers.DecimalField(max_digits=10, decimal_places=2)
+    interescompensatorio = serializers.DecimalField(max_digits=10, decimal_places=2)
+    segurodesgravamen = serializers.DecimalField(max_digits=10, decimal_places=2)
+    montocuotatotal = serializers.DecimalField(max_digits=10, decimal_places=2)
+    pagado = serializers.BooleanField()
