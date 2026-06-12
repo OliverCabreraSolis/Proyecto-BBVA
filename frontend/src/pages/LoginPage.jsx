@@ -65,9 +65,15 @@ export default function LoginPage() {
             {/* Tipo documento */}
             <label className={styles.label}>Tipo de documento</label>
             <select className={styles.select}>
-              <option>DNI</option>
-              <option>CE</option>
-              <option>Pasaporte</option>
+            <option>DNI</option>
+            <option>RUC</option>
+            <option>Pasaporte</option>
+            <option>Carné de Extranjería</option>
+            <option>Carné Identidad Militar</option>
+            <option>Carné Diplomático</option>
+            <option>Partida de Nacimiento</option>
+            <option>Carné PTP</option>
+            <option>Doc. Identidad País Origen</option>
             </select>
 
             {/* Número documento */}
@@ -135,8 +141,9 @@ export default function LoginPage() {
               </button>
               <button
                 type="button"
-                className="btn btn-outline  "
+                className="btn btn-outline"
                 style={{ flex: 1 }}
+                onClick={() => navigate('/register')}
               >
                 Afíliate
               </button>

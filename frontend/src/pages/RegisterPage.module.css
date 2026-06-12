@@ -1,0 +1,175 @@
+.container {
+  min-height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  font-size: 1.8rem;
+  color: #004A97;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.navLink {
+  color: #004A97;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+}
+
+.title {
+  font-size: 1.8rem;
+  color: #1a1a2e;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #636e72;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #2d3436;
+  margin-bottom: 0.4rem;
+}
+
+.input {
+  padding: 0.85rem 1rem;
+  border: 1.5px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #004A97;
+  box-shadow: 0 0 0 3px rgba(0,74,151,0.1);
+}
+
+.select {
+  padding: 0.85rem 1rem;
+  border: 1.5px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: white;
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #004A97;
+  box-shadow: 0 0 0 3px rgba(0,74,151,0.1);
+}
+
+.passwordWrapper {
+  position: relative;
+}
+
+.passwordInput {
+  width: 100%;
+  padding: 0.85rem 3rem 0.85rem 1rem;
+  border: 1.5px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.passwordInput:focus {
+  outline: none;
+  border-color: #004A97;
+  box-shadow: 0 0 0 3px rgba(0,74,151,0.1);
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.eyeIcono {
+  width: 20px;
+  height: 20px;
+  color: #004A97;
+}
+
+.hint {
+  font-size: 0.78rem;
+  color: #b2bec3;
+  margin-top: 0.3rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #f0f0f0;
+  margin: 1.5rem 0;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.loginLink {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #636e72;
+}
+
+.loginLinkBtn {
+  color: #004A97;
+  font-weight: 600;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+}

@@ -7,8 +7,15 @@ export async function login(dni, password) {
   return res.data;
 }
 
-export async function registro(nombre, apellido, dni, email, password) {
-  const res = await axios.post(`${API}/registro/`, { nombre, apellido, dni, email, password });
+export async function registro(nombre, apellido, tipo_documento, dni, email, password) {
+  const res = await axios.post(`${API}/registro/`, { 
+    nombre, 
+    apellido, 
+    tipo_documento,
+    dni, 
+    email, 
+    password 
+  });
   return res.data;
 }
 

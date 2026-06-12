@@ -22,8 +22,12 @@ export default function LandingPage() {
         <div className={styles.navLinks}>
           <span className={styles.navLink}>Personas</span>
           <span className={styles.navLink}>Empresas</span>
-          <span className={styles.navLink}>Obtén tu Tarjeta de Crédito</span>
-          <span className={styles.navLink}>Abre tu cuenta ▾</span>
+          <span className={styles.navLink} onClick={() => navigate('/register')} 
+            >Obtén tu Tarjeta de Crédito
+            </span>
+          <span className={styles.navLink} onClick={() => navigate('/register')}
+            >Abre tu cuenta ▾
+            </span>
           <button className="btn btn-primary" onClick={() => navigate('/banca')}>
             Banca por Internet
           </button>
@@ -44,7 +48,9 @@ export default function LandingPage() {
           </p>
           <div className={styles.heroButtons}>
             <button className="btn btn-primary">Solicítala aquí</button>
-            <button className="btn btn-outline">Inscríbete aquí</button>
+            <button className="btn btn-outline" onClick={() => navigate('/register')}>
+              Inscríbete aquí
+            </button>
           </div>
         </div>
 
