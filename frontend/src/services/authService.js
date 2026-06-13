@@ -2,19 +2,35 @@ import axios from 'axios';
 
 const API = 'http://localhost:8000/api/auth';
 
+// Login original (DNI)
 export async function login(dni, password) {
   const res = await axios.post(`${API}/login/`, { dni, password });
   return res.data;
 }
 
+// Login homebanking (username)
+export async function loginHomebanking(username, password) {
+  const res = await axios.post(`${API}/homebanking/login/`, { username, password });
+  return res.data;
+}
+
+// Dashboard cliente
+export async function getDashboard(pkcliente) {
+  const res = await axios.get(`${API}/homebanking/dashboard/${pkcliente}/`);
+  return res.data;
+}
+
+// Cronograma de pagos
+export async function getCronograma(pkcuentacredito, token) {
+  const res = await axios.get(`${API}/homebanking/cronograma/${pkcuentacredito}/`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return res.data;
+}
+
 export async function registro(nombre, apellido, tipo_documento, dni, email, password) {
-  const res = await axios.post(`${API}/registro/`, { 
-    nombre, 
-    apellido, 
-    tipo_documento,
-    dni, 
-    email, 
-    password 
+  const res = await axios.post(`${API}/registro/`, {
+    nombre, apellido, tipo_documento, dni, email, password
   });
   return res.data;
 }

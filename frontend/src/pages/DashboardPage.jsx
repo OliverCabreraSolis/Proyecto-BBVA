@@ -1,23 +1,35 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { obtenerSesion, cerrarSesion } from '../services/authService';
+import { obtenerSesion, cerrarSesion, getDashboard } from '../services/authService';
 import styles from './DashboardPage.module.css';
 import {
-  HomeIcon,
-  ArrowsRightLeftIcon,
-  CreditCardIcon,
-  BanknotesIcon,
-  CircleStackIcon,
-  QrCodeIcon,
-  ArrowDownLeftIcon,
-  ArrowUpRightIcon,
-  UserCircleIcon,
-  ArrowRightOnRectangleIcon,
+  HomeIcon, ArrowsRightLeftIcon, CreditCardIcon,
+  BanknotesIcon, CircleStackIcon, QrCodeIcon,
+  ArrowDownLeftIcon, ArrowUpRightIcon,
+  UserCircleIcon, ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const sesion = obtenerSesion();
   const usuario = sesion?.usuario;
+
+  const [dashboard, setDashboard] = useState(null);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    async function cargarDashboard() {
+      try {
+        const data = await getDashboard(usuario.pkcliente);
+        setDashboard(data);
+      } catch (err) {
+        console.error('Error cargando dashboard:', err);
+      } finally {
+        setCargando(false);
+      }
+    }
+    if (usuario?.pkcliente) cargarDashboard();
+  }, []);
 
   function handleLogout() {
     cerrarSesion();
@@ -36,14 +48,6 @@ export default function DashboardPage() {
     { icono: <QrCodeIcon className={styles.accesoIconoSvg} />, nombre: 'QR Pago' },
   ];
 
-  const movimientos = [
-    { desc: 'Depósito en cuenta', monto: '+S/ 500.00', fecha: '14/05/2026', positivo: true },
-    { desc: 'Pago de servicio luz', monto: '-S/ 120.00', fecha: '13/05/2026', positivo: false },
-    { desc: 'Transferencia recibida', monto: '+S/ 200.00', fecha: '12/05/2026', positivo: true },
-    { desc: 'Compra con tarjeta', monto: '-S/ 85.00', fecha: '11/05/2026', positivo: false },
-    { desc: 'Pago de préstamo', monto: '-S/ 350.00', fecha: '10/05/2026', positivo: false },
-  ];
-
   return (
     <div className={styles.container}>
 
@@ -53,7 +57,7 @@ export default function DashboardPage() {
         <div className={styles.navRight}>
           <span className={styles.navUsuario}>
             <UserCircleIcon className={styles.navIcono} />
-            {usuario?.nombre || usuario?.email}
+            {usuario?.nombre}
           </span>
           <button className={styles.btnLogout} onClick={handleLogout}>
             <ArrowRightOnRectangleIcon className={styles.btnLogoutIcono} />
@@ -62,7 +66,6 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      {/* Layout */}
       <div className={styles.layout}>
 
         {/* Sidebar */}
@@ -84,96 +87,124 @@ export default function DashboardPage() {
           </a>
         </nav>
 
-        {/* Contenido principal */}
+        {/* Contenido */}
         <main className={styles.main}>
 
           {/* Saludo */}
           <div className={styles.saludoRow}>
             <div>
               <h4 className={styles.saludo}>
-                Bienvenido, {usuario?.nombre || usuario?.email} 👋
+                Bienvenido, {usuario?.nombre} 👋
               </h4>
               <p className={styles.fecha}>{fecha}</p>
             </div>
             <span className={styles.badgeOnline}>● En línea</span>
           </div>
 
-          {/* Tarjetas saldo */}
-          <div className={styles.tarjetasGrid}>
-            <div className={`${styles.tarjeta} ${styles.tarjetaAhorros}`}>
-              <span className={`${styles.tarjetaBadge} ${styles.badgeAhorros}`}>
-                Cuenta de Ahorro
-              </span>
-              <p className={styles.tarjetaNumero}>••• - •••••• - 4521</p>
-              <p className={`${styles.tarjetaValor} ${styles.tarjetaValorAhorros}`}>
-                S/ 3,450.00
-              </p>
-              <p className={styles.tarjetaSub}>PEN · Saldo disponible</p>
-            </div>
+          {cargando ? (
+            <p style={{ color: '#636e72' }}>Cargando datos...</p>
+          ) : (
+            <>
+              {/* Tarjetas saldo */}
+              <div className={styles.tarjetasGrid}>
 
-            <div className={`${styles.tarjeta} ${styles.tarjetaCredito}`}>
-              <span className={`${styles.tarjetaBadge} ${styles.badgeCredito}`}>
-                Crédito Activo
-              </span>
-              <p className={styles.tarjetaNumero}>••• - •••••• - 8832</p>
-              <p className={`${styles.tarjetaValor} ${styles.tarjetaValorCredito}`}>
-                S/ 8,000.00
-              </p>
-              <p className={styles.tarjetaSub}>PEN · Saldo pendiente</p>
-            </div>
-
-            <div className={`${styles.tarjeta} ${styles.tarjetaCuota}`}>
-              <span className={`${styles.tarjetaBadge} ${styles.badgeCuota}`}>
-                Próxima Cuota
-              </span>
-              <p className={styles.tarjetaNumero}>Vence en 30 días</p>
-              <p className={`${styles.tarjetaValor} ${styles.tarjetaValorCuota}`}>
-                15/06/2026
-              </p>
-              <p className={styles.tarjetaSub}>S/ 350.00 a pagar</p>
-            </div>
-          </div>
-
-          {/* Accesos rápidos */}
-          <p className={styles.accesosTitle}>Accesos rápidos</p>
-          <div className={styles.accesosGrid}>
-            {accesos.map((a) => (
-              <div key={a.nombre} className={styles.accesoCard}>
-                <div className={styles.accesoIcono}>{a.icono}</div>
-                <p className={styles.accesoNombre}>{a.nombre}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Movimientos */}
-          <div className={styles.movimientos}>
-            <div className={styles.movimientosHeader}>
-              <h6 className={styles.movimientosTitle}>
-                Últimos movimientos
-              </h6>
-              <button className={styles.verTodos}>Ver todos</button>
-            </div>
-
-            {movimientos.map((m, i) => (
-              <div key={i} className={styles.movimiento}>
-                <div className={styles.movInfo}>
-                  <div className={`${styles.movIcono} ${m.positivo ? styles.movIconoPos : styles.movIconoNeg}`}>
-                    {m.positivo
-                      ? <ArrowDownLeftIcon className={styles.movSvgPos} />
-                      : <ArrowUpRightIcon className={styles.movSvgNeg} />
-                    }
-                  </div>
-                  <div>
-                    <p className={styles.movDesc}>{m.desc}</p>
-                    <p className={styles.movFecha}>{m.fecha}</p>
-                  </div>
+                {/* Cuenta Ahorros */}
+                <div className={`${styles.tarjeta} ${styles.tarjetaAhorros}`}>
+                  <span className={`${styles.tarjetaBadge} ${styles.badgeAhorros}`}>
+                    Cuenta de Ahorro
+                  </span>
+                  <p className={styles.tarjetaNumero}>
+                    {dashboard?.cuenta_ahorro?.numerocuenta || '---'}
+                  </p>
+                  <p className={`${styles.tarjetaValor} ${styles.tarjetaValorAhorros}`}>
+                    S/ {parseFloat(dashboard?.cuenta_ahorro?.saldocapital || 0).toLocaleString('es-PE', { minimumFractionDigits: 2 })}
+                  </p>
+                  <p className={styles.tarjetaSub}>PEN · Saldo disponible</p>
                 </div>
-                <p className={`${styles.movMonto} ${m.positivo ? styles.movPositivo : styles.movNegativo}`}>
-                  {m.monto}
-                </p>
+
+                {/* Crédito Vehicular */}
+                {dashboard?.creditos?.length > 0 && (
+                  <div className={`${styles.tarjeta} ${styles.tarjetaCredito}`}>
+                    <span className={`${styles.tarjetaBadge} ${styles.badgeCredito}`}>
+                      {dashboard.creditos[0].producto}
+                    </span>
+                    <p className={styles.tarjetaNumero}>
+                      {dashboard.creditos[0].marca} {dashboard.creditos[0].modelo} {dashboard.creditos[0].anio}
+                    </p>
+                    <p className={`${styles.tarjetaValor} ${styles.tarjetaValorCredito}`}>
+                      S/ {parseFloat(dashboard.creditos[0].saldocapital).toLocaleString('es-PE', { minimumFractionDigits: 2 })}
+                    </p>
+                    <p className={styles.tarjetaSub}>Saldo pendiente · {dashboard.creditos[0].condicion}</p>
+                  </div>
+                )}
+
+                {/* Próxima cuota */}
+                {dashboard?.proxima_cuota && (
+                  <div className={`${styles.tarjeta} ${styles.tarjetaCuota}`}>
+                    <span className={`${styles.tarjetaBadge} ${styles.badgeCuota}`}>
+                      Próxima Cuota
+                    </span>
+                    <p className={styles.tarjetaNumero}>
+                      Cuota #{dashboard.proxima_cuota.nrocuota} · Vence {dashboard.proxima_cuota.fechavencimiento}
+                    </p>
+                    <p className={`${styles.tarjetaValor} ${styles.tarjetaValorCuota}`}>
+                      S/ {parseFloat(dashboard.proxima_cuota.montocuotatotal).toLocaleString('es-PE', { minimumFractionDigits: 2 })}
+                    </p>
+                    <p className={styles.tarjetaSub}>
+                      Capital: S/{dashboard.proxima_cuota.amortizacion} · Interés: S/{dashboard.proxima_cuota.interescompensatorio} · Seguro: S/{dashboard.proxima_cuota.segurodesgravamen}
+                    </p>
+                  </div>
+                )}
+
               </div>
-            ))}
-          </div>
+
+              {/* Accesos rápidos */}
+              <p className={styles.accesosTitle}>Accesos rápidos</p>
+              <div className={styles.accesosGrid}>
+                {accesos.map((a) => (
+                  <div key={a.nombre} className={styles.accesoCard}>
+                    <div className={styles.accesoIcono}>{a.icono}</div>
+                    <p className={styles.accesoNombre}>{a.nombre}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Info crédito vehicular */}
+              {dashboard?.creditos?.length > 0 && (
+                <div className={styles.movimientos}>
+                  <div className={styles.movimientosHeader}>
+                    <h6 className={styles.movimientosTitle}>
+                      🚗 Mi Crédito Vehicular
+                    </h6>
+                  </div>
+                  {dashboard.creditos.map((c) => (
+                    <div key={c.pkcuentacredito} className={styles.movimiento}>
+                      <div className={styles.movInfo}>
+                        <div className={`${styles.movIcono} ${styles.movIconoPos}`}>
+                          <ArrowDownLeftIcon className={styles.movSvgPos} />
+                        </div>
+                        <div>
+                          <p className={styles.movDesc}>
+                            {c.marca} {c.modelo} {c.anio} · Placa {c.placa}
+                          </p>
+                          <p className={styles.movFecha}>
+                            Desembolso: {c.fechadesembolso} · Tasa: {c.tasacompensatoria}% · Mora: {c.tasamoratoria}%
+                          </p>
+                        </div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <p className={`${styles.movMonto} ${styles.movPositivo}`}>
+                          S/ {parseFloat(c.montoprestamo).toLocaleString('es-PE', { minimumFractionDigits: 2 })}
+                        </p>
+                        <p className={styles.movFecha}>{c.condicion} · {c.diasatraso} días atraso</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+            </>
+          )}
 
         </main>
       </div>
