@@ -70,8 +70,6 @@ class LoginSerializer(serializers.Serializer):
     def validate_password(self, value):
         if ' ' in value:
             raise serializers.ValidationError('La contraseña no debe contener espacios.')
-        if not re.match(r'^[a-zA-Z0-9]+$', value):
-            raise serializers.ValidationError('La contraseña solo puede contener letras y números.')
         return value
 
 

@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.hashers import make_password, check_password
@@ -157,6 +158,7 @@ def login_homebanking(request):
 
 # ─── DASHBOARD CLIENTE ───────────────────────────────────
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def dashboard_cliente(request, pkcliente):
     try:
         cuenta = Dcuentaahorro.objects.get(pkcliente=pkcliente)
@@ -206,6 +208,7 @@ def dashboard_cliente(request, pkcliente):
                 'interescompensatorio': str(cuota.interescompensatorio),
                 'segurodesgravamen': str(cuota.segurodesgravamen),
             }
+            
 
     return Response({
         'cuenta_ahorro': cuenta_data,
@@ -216,6 +219,7 @@ def dashboard_cliente(request, pkcliente):
 
 # ─── CRONOGRAMA DE PAGOS ─────────────────────────────────
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def cronograma_cliente(request, pkcuentacredito):
     cuotas = Fplanpagomes.objects.filter(
         pkcuentacredito=pkcuentacredito
