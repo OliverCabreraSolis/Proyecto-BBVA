@@ -1,0 +1,363 @@
+.container {
+  min-height: 100vh;
+  background: #f5f6fa;
+}
+
+.navbar {
+  background: #1a1a2e;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navLogo {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: 700;
+}
+
+.navBadge {
+  background: #004A97;
+  color: white;
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navUsuario {
+  color: white;
+  font-size: 0.9rem;
+}
+
+.navCargo {
+  color: #b2bec3;
+  font-size: 0.8rem;
+}
+
+.btnLogout {
+  background: transparent;
+  border: 1.5px solid white;
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.btnLogout:hover {
+  background: white;
+  color: #1a1a2e;
+}
+
+.layout {
+  display: flex;
+  min-height: calc(100vh - 56px);
+}
+
+.sidebar {
+  width: 220px;
+  background: white;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+  padding: 1.5rem 0;
+  flex-shrink: 0;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  color: #636e72;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+  border-left: 3px solid transparent;
+}
+
+.sidebarLink:hover {
+  background: #f0f4ff;
+  color: #004A97;
+  border-left: 3px solid #004A97;
+}
+
+.sidebarLinkActive {
+  background: #f0f4ff;
+  color: #004A97;
+  border-left: 3px solid #004A97;
+}
+
+.sidebarIcono {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.pageTitle {
+  font-size: 1.4rem;
+  color: #1a1a2e;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.pageSubtitle {
+  color: #636e72;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.filtros {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.filtroBtn {
+  padding: 0.5rem 1rem;
+  border: 1.5px solid #dfe6e9;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #636e72;
+  transition: all 0.2s;
+}
+
+.filtroBtnActivo {
+  background: #004A97;
+  color: white;
+  border-color: #004A97;
+}
+
+.tabla {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  overflow: hidden;
+}
+
+.tablaHeader {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1.5fr 1fr 1fr 1fr 1fr;
+  padding: 1rem 1.5rem;
+  background: #f8f9ff;
+  border-bottom: 1px solid #eee;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #636e72;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tablaFila {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1.5fr 1fr 1fr 1fr 1fr;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.tablaFila:hover {
+  background: #f8f9ff;
+}
+
+.tablaFila:last-child {
+  border-bottom: none;
+}
+
+.clienteNombre {
+  font-weight: 600;
+  color: #2d3436;
+  font-size: 0.9rem;
+}
+
+.clienteDni {
+  font-size: 0.8rem;
+  color: #b2bec3;
+}
+
+.monto {
+  font-weight: 700;
+  color: #004A97;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badgePendiente { background: #fff3cd; color: #856404; }
+.badgeAprobado { background: #eafaf6; color: #00b894; }
+.badgeRechazado { background: #ffeaea; color: #e74c3c; }
+.badgeDesembolsado { background: #e8f0fb; color: #004A97; }
+
+.btnVer {
+  background: #004A97;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.vacio {
+  text-align: center;
+  padding: 3rem;
+  color: #b2bec3;
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modalTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 1.5rem;
+}
+
+.modalGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modalField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.modalLabel {
+  font-size: 0.75rem;
+  color: #b2bec3;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.modalValue {
+  font-size: 0.95rem;
+  color: #2d3436;
+  font-weight: 500;
+}
+
+.analisis {
+  background: #f8f9ff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #004A97;
+}
+
+.analisisTitle {
+  font-weight: 700;
+  color: #004A97;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.analisisItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #636e72;
+  margin-bottom: 0.3rem;
+}
+
+.viable {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.modalBtns {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Mora */
+.moraCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid #e74c3c;
+}
+
+.moraCardAlto { border-left-color: #e17055; }
+.moraCardMedio { border-left-color: #fdcb6e; }
+
+.moraNombre {
+  font-weight: 700;
+  color: #2d3436;
+}
+
+.moraDni {
+  font-size: 0.8rem;
+  color: #b2bec3;
+}
+
+.moraDias {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.moraBanda {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.bandaCritico { background: #ffeaea; color: #e74c3c; }
+.bandaAlto { background: #fdf0ed; color: #e17055; }
+.bandaMedio { background: #fef9e7; color: #f39c12; }

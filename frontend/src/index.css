@@ -1,0 +1,45 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f6fa;
+  color: #2d3436;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-primary { background: #004A97; color: white; }
+.btn-primary:hover { background: #003a78; }
+.btn-danger { background: #e74c3c; color: white; }
+.btn-danger:hover { background: #c0392b; }
+.btn-success { background: #00b894; color: white; }
+.btn-success:hover { background: #00a381; }
+.btn-outline { background: transparent; border: 2px solid #004A97; color: #004A97; }
+
+.error-msg {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #ffeaea;
+  border-radius: 6px;
+  border-left: 3px solid #e74c3c;
+}
+
+.success-msg {
+  color: #00b894;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #eafaf6;
+  border-radius: 6px;
+  border-left: 3px solid #00b894;
+}
