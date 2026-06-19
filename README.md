@@ -1,4 +1,4 @@
-# 🏦 BBVA Perú — Home Banking
+ 🏦 BBVA Perú — Home Banking
 
 Proyecto académico que simula el portal de Banca por Internet del BBVA Perú.
 Desarrollado para el curso de Desarrollo de Aplicaciones Web — Semana 9.
@@ -18,8 +18,11 @@ Desarrollado para el curso de Desarrollo de Aplicaciones Web — Semana 9.
 ---
 
 ## 📁 Estructura del proyecto
+## 📁 Estructura del Proyecto
+
+```text
 BBVA/
-├── frontend/          → React + Vite
+├── frontend/                  # React + Vite
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── LandingPage.jsx
@@ -32,18 +35,16 @@ BBVA/
 │   │       └── authService.js
 │   └── package.json
 │
-└── backend/ → Django REST API
-├── autenticacion/
-│   ├── models.py
-│   ├── serializers.py
-│   ├── views.py
-│   └── urls.py
-├── bbva_backend/
-│   ├── settings.py
-│   └── urls.py
-└── manage.py
-
----
+└── backend/                   # Django REST API
+    ├── autenticacion/
+    │   ├── models.py
+    │   ├── serializers.py
+    │   ├── views.py
+    │   └── urls.py
+    ├── bbva_backend/
+    │   ├── settings.py
+    │   └── urls.py
+    └── manage.py
 
 ## 🗄️ Base de datos (Supabase)
 

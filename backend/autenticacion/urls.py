@@ -10,4 +10,7 @@ urlpatterns = [
     path('homebanking/login/', views.login_homebanking, name='login_homebanking'),
     path('homebanking/dashboard/<int:pkcliente>/', views.dashboard_cliente, name='dashboard_cliente'),
     path('homebanking/cronograma/<int:pkcuentacredito>/', views.cronograma_cliente, name='cronograma_cliente'),
+    path('homebanking/solicitud/', views.crear_solicitud, name='crear_solicitud'),
+    path('homebanking/mis-solicitudes/<int:pkcliente>/', views.mis_solicitudes, name='mis_solicitudes'),
+
 ]

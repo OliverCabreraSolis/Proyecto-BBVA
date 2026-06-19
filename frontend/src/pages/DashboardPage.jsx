@@ -162,13 +162,17 @@ export default function DashboardPage() {
               <p className={styles.accesosTitle}>Accesos rápidos</p>
               <div className={styles.accesosGrid}>
                 {accesos.map((a) => (
-                  <div key={a.nombre} className={styles.accesoCard}>
+                  <div
+                    key={a.nombre}
+                    className={styles.accesoCard}
+                    onClick={() => a.nombre === 'Préstamos' && navigate('/solicitud')}
+                    style={{ cursor: a.nombre === 'Préstamos' ? 'pointer' : 'default' }}
+                  >
                     <div className={styles.accesoIcono}>{a.icono}</div>
                     <p className={styles.accesoNombre}>{a.nombre}</p>
                   </div>
                 ))}
               </div>
-
               {/* Info crédito vehicular */}
               {dashboard?.creditos?.length > 0 && (
                 <div className={styles.movimientos}>

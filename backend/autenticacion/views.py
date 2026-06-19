@@ -10,8 +10,10 @@ import uuid
 from .models import (
     Dcliente, UsuariosHomebanking,
     Dcuentaahorro, Fcuentaahorro,
-    Fagcuentacredito, Fgarantia, Fplanpagomes
+    Fagcuentacredito, Fgarantia, Fplanpagomes,
+    Dsolicitud, Dsolicitudestado, Dproducto, Dagencia
 )
+
 from .serializers import (
     RegistroSerializer, LoginSerializer, UsuarioSerializer,
     LoginHomebankingSerializer
@@ -237,5 +239,75 @@ def cronograma_cliente(request, pkcuentacredito):
             'pagado': cuota.pagado,
             'fechapago': str(cuota.fechapago) if cuota.fechapago else None,
         })
+    
+    from .models import Dsolicitud, Dsolicitudestado, Dproducto, Dagencia, Fgarantia
+import uuid as uuid_lib
 
-    return Response({'cuotas': cuotas_data}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def crear_solicitud(request):
+    pkcliente = request.data.get('pkcliente')
+    montopedido = request.data.get('montopedido')
+    plazomeses = request.data.get('plazomeses')
+    pkproducto = request.data.get('pkproducto')
+    proposito = request.data.get('proposito', '')
+
+    if not all([pkcliente, montopedido, plazomeses, pkproducto]):
+        return Response({'message': 'Faltan campos obligatorios'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        cliente = Dcliente.objects.get(pkcliente=pkcliente)
+        producto = Dproducto.objects.get(pkproducto=pkproducto)
+        estado_pendiente = Dsolicitudestado.objects.get(codestado='PENDIENTE')
+        agencia = Dagencia.objects.first()
+    except Exception as e:
+        return Response({'message': f'Error: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+
+    monto = float(montopedido)
+    plazo = int(plazomeses)
+    tasa = 12.50
+    tasa_mensual = tasa / 100 / 12
+    cuota = monto * (tasa_mensual * (1 + tasa_mensual) ** plazo) / ((1 + tasa_mensual) ** plazo - 1)
+
+    solicitud = Dsolicitud.objects.create(
+        pkcliente=cliente,
+        pkasesor=None,
+        pkagencia=agencia,
+        pkproducto=producto,
+        pkestado=estado_pendiente,
+        montopedido=monto,
+        plazomeses=plazo,
+        tasacompensatoria=tasa,
+        tasamoratoria=24.00,
+        cuotamensual=round(cuota, 2),
+        proposito=proposito,
+        created_at=timezone.now(),
+    )
+
+    return Response({
+        'message': 'Solicitud enviada exitosamente. Será evaluada por un asesor.',
+        'pksolicitud': solicitud.pksolicitud,
+        'cuota_estimada': round(cuota, 2),
+    }, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def mis_solicitudes(request, pkcliente):
+    solicitudes = Dsolicitud.objects.filter(pkcliente=pkcliente).order_by('-created_at')
+
+    data = []
+    for s in solicitudes:
+        data.append({
+            'pksolicitud': s.pksolicitud,
+            'producto': s.pkproducto.desproducto if s.pkproducto else '',
+            'estado': s.pkestado.desestado if s.pkestado else '',
+            'montopedido': str(s.montopedido),
+            'montoaprobado': str(s.montoaprobado) if s.montoaprobado else None,
+            'plazomeses': s.plazomeses,
+            'cuotamensual': str(s.cuotamensual) if s.cuotamensual else None,
+            'created_at': str(s.created_at),
+        })
+
+    return Response({'solicitudes': data}, status=status.HTTP_200_OK)

@@ -55,3 +55,15 @@ export function cerrarSesion() {
 export function haySesion() {
   return !!localStorage.getItem('token');
 }
+
+export async function crearSolicitud(pkcliente, montopedido, plazomeses, pkproducto, proposito) {
+  const res = await axios.post(`${API}/homebanking/solicitud/`, {
+    pkcliente, montopedido, plazomeses, pkproducto, proposito
+  });
+  return res.data;
+}
+
+export async function getMisSolicitudes(pkcliente) {
+  const res = await axios.get(`${API}/homebanking/mis-solicitudes/${pkcliente}/`);
+  return res.data;
+}
