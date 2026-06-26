@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = 'http://localhost:8001/api/core';
+const API = 'https://corebbva-backend.onrender.com/api/core';
 
 export async function loginCore(dni, password) {
   const res = await axios.post(`${API}/login/`, { dni, password });
