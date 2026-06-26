@@ -10,7 +10,10 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['*']
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5174',
+]
+CORS_ALLOW_ALL_ORIGINS = True  # Solo para desarrollo/pruebas
 
 INSTALLED_APPS = [
     'django.contrib.admin',
