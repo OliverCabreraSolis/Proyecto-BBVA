@@ -12,5 +12,5 @@ urlpatterns = [
     path('homebanking/cronograma/<int:pkcuentacredito>/', views.cronograma_cliente, name='cronograma_cliente'),
     path('homebanking/solicitud/', views.crear_solicitud, name='crear_solicitud'),
     path('homebanking/mis-solicitudes/<int:pkcliente>/', views.mis_solicitudes, name='mis_solicitudes'),
-
+    path('agencias/', views.listar_agencias, name='listar_agencias'),
 ]

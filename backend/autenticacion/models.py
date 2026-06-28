@@ -88,7 +88,8 @@ class Dcliente(models.Model):
     direccion = models.CharField(max_length=200, blank=True, null=True)
     ingresosmensual = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
-
+    pkagencia = models.ForeignKey('Dagencia', models.DO_NOTHING, db_column='pkagencia', blank=True, null=True)
+    
     class Meta:
         managed = False
         db_table = 'dcliente'

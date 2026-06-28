@@ -21,6 +21,9 @@ class RegistroSerializer(serializers.Serializer):
     dni = serializers.CharField()
     email = serializers.EmailField()
     password = serializers.CharField()
+    pkagencia = serializers.IntegerField(required=False, default=1)
+    ingresosmensual = serializers.DecimalField(max_digits=12, decimal_places=2, required=False, default=2000.00)
+    saldo_inicial = serializers.DecimalField(max_digits=12, decimal_places=2, required=False, default=0.00)
 
     def validate_dni(self, value):
         tipo = self.initial_data.get('tipo_documento', 'DNI')

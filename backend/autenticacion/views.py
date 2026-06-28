@@ -18,10 +18,9 @@ from .serializers import (
     RegistroSerializer, LoginSerializer, UsuarioSerializer,
     LoginHomebankingSerializer
 )
-
-
 # ─── REGISTRO (tabla dcliente) ───────────────────────────
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def registro(request):
     serializer = RegistroSerializer(data=request.data)
     if not serializer.is_valid():
@@ -35,12 +34,16 @@ def registro(request):
     if Dcliente.objects.filter(numerodocumento=data['dni']).exists():
         return Response({'message': 'El documento ya está registrado'}, status=status.HTTP_400_BAD_REQUEST)
 
+    agencia_obj = Dagencia.objects.filter(pkagencia=data.get('pkagencia', 1)).first()
+
     cliente = Dcliente.objects.create(
-        nombre=data['nombre'],
-        apellidopaterno=data['apellido'],
-        numerodocumento=data['dni'],
-        correo=data['email'],
-        created_at=timezone.now(),
+    nombre=data['nombre'],
+    apellidopaterno=data['apellido'],
+    numerodocumento=data['dni'],
+    correo=data['email'],
+    ingresosmensual=data.get('ingresosmensual', 2000.00),
+    pkagencia=agencia_obj,
+    created_at=timezone.now(),
     )
 
     usuario_hb = UsuariosHomebanking.objects.create(
@@ -48,6 +51,29 @@ def registro(request):
         username=data['dni'],
         password_hash=make_password(data['password']),
         created_at=timezone.now(),
+    )
+
+    # Crear cuenta de ahorros con la agencia seleccionada
+    
+    pkagencia = data.get('pkagencia', 1)
+    saldo_inicial = data.get('saldo_inicial', 0.00)
+    numero_cuenta = f'191-{str(cliente.pkcliente).zfill(8)}'
+
+    cuenta = Dcuentaahorro.objects.create(
+        pkcliente=cliente,
+        numerocuenta=numero_cuenta,
+        tipo='AC',
+        moneda='PEN',
+        created_at=timezone.now(),
+    )
+
+    Fcuentaahorro.objects.create(
+        pkcuentaahorro=cuenta,
+        saldocapital=saldo_inicial,
+        saldointeres=0.00,
+        saldopromedio=saldo_inicial,
+        tasa=1.5,
+        fecha=timezone.now().date(),
     )
 
     refresh = RefreshToken()
@@ -66,9 +92,9 @@ def registro(request):
         }
     }, status=status.HTTP_201_CREATED)
 
-
 # ─── LOGIN ORIGINAL (por DNI) ────────────────────────────
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def login(request):
     serializer = LoginSerializer(data=request.data)
     if not serializer.is_valid():
@@ -101,7 +127,6 @@ def login(request):
             'correo': cliente.correo,
         }
     }, status=status.HTTP_200_OK)
-
 
 # ─── LOGIN HOMEBANKING (por username) ────────────────────
 @api_view(['POST'])
@@ -239,9 +264,8 @@ def cronograma_cliente(request, pkcuentacredito):
             'pagado': cuota.pagado,
             'fechapago': str(cuota.fechapago) if cuota.fechapago else None,
         })
-    
-    from .models import Dsolicitud, Dsolicitudestado, Dproducto, Dagencia, Fgarantia
-import uuid as uuid_lib
+
+    return Response({'cuotas': cuotas_data}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -257,13 +281,13 @@ def crear_solicitud(request):
         return Response({'message': 'Faltan campos obligatorios'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        cliente = Dcliente.objects.get(pkcliente=pkcliente)
-        producto = Dproducto.objects.get(pkproducto=pkproducto)
-        estado_pendiente = Dsolicitudestado.objects.get(codestado='PENDIENTE')
-        agencia = Dagencia.objects.first()
+      cliente = Dcliente.objects.get(pkcliente=pkcliente)
+      producto = Dproducto.objects.get(pkproducto=pkproducto)
+      estado_pendiente = Dsolicitudestado.objects.get(codestado='PENDIENTE')
+      agencia = cliente.pkagencia if cliente.pkagencia else Dagencia.objects.first()
     except Exception as e:
         return Response({'message': f'Error: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
-
+    
     monto = float(montopedido)
     plazo = int(plazomeses)
     tasa = 12.50
@@ -311,3 +335,11 @@ def mis_solicitudes(request, pkcliente):
         })
 
     return Response({'solicitudes': data}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def listar_agencias(request):
+    agencias = Dagencia.objects.all()
+    data = [{'pkagencia': a.pkagencia, 'desagencia': a.desagencia} for a in agencias]
+    return Response({'agencias': data}, status=status.HTTP_200_OK)
