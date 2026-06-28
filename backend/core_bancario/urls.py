@@ -8,4 +8,5 @@ urlpatterns = [
     path('solicitudes/<int:pksolicitud>/decidir/', views.decidir_solicitud, name='decidir_solicitud'),
     path('cartera/mora/', views.cartera_mora, name='cartera_mora'),
     path('estadisticas/', views.estadisticas_dashboard, name='estadisticas'),
+    path('credito/<int:pkcuentacredito>/pago-anticipado/', views.pago_anticipado, name='pago_anticipado'),
 ]

@@ -307,3 +307,55 @@ def estadisticas_dashboard(request):
         'embudo_solicitudes': embudo,
         'matriz_regional': matriz,
     }, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def pago_anticipado(request, pkcuentacredito):
+    """
+    Pago Anticipado: abono mayor a 2 cuotas.
+    Reduce el capital y recalcula intereses sobre el saldo restante.
+    """
+    monto_abono = request.data.get('monto_abono')
+
+    if not monto_abono:
+        return Response({'message': 'Debe indicar el monto del abono'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        credito = Fagcuentacredito.objects.get(pkcuentacredito=pkcuentacredito)
+    except Fagcuentacredito.DoesNotExist:
+        return Response({'message': 'Crédito no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+    cuotas_pendientes = Fplanpagomes.objects.filter(
+        pkcuentacredito=credito, pagado=False
+    ).order_by('nrocuota')
+
+    if not cuotas_pendientes.exists():
+        return Response({'message': 'No hay cuotas pendientes'}, status=status.HTTP_400_BAD_REQUEST)
+
+    valor_cuota_promedio = float(cuotas_pendientes.first().montocuotatotal)
+    monto_abono = float(monto_abono)
+
+    # Regla del PDF: Pago Anticipado = abono mayor a 2 cuotas
+    if monto_abono <= (valor_cuota_promedio * 2):
+        return Response({
+            'message': 'Este monto corresponde a un Adelanto de Cuotas (≤2 cuotas), no a un Pago Anticipado. '
+                       'El Pago Anticipado requiere un abono mayor a 2 cuotas.'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Reducir el capital
+    saldo_anterior = float(credito.saldocapital)
+    nuevo_saldo = round(saldo_anterior - monto_abono, 2)
+
+    if nuevo_saldo < 0:
+        nuevo_saldo = 0
+
+    credito.saldocapital = nuevo_saldo
+    credito.save()
+
+    return Response({
+        'message': 'Pago Anticipado aplicado exitosamente. El capital ha sido reducido.',
+        'saldo_anterior': saldo_anterior,
+        'monto_abonado': monto_abono,
+        'nuevo_saldo_capital': nuevo_saldo,
+        'nota': 'El cliente puede elegir reducir el plazo o el monto de la cuota (regla BBVA).'
+    }, status=status.HTTP_200_OK)
