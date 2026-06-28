@@ -277,9 +277,8 @@ def crear_solicitud(request):
     pkproducto = request.data.get('pkproducto')
     proposito = request.data.get('proposito', '')
 
-    if not all([pkcliente, montopedido, plazomeses, pkproducto]):
-        return Response({'message': 'Faltan campos obligatorios'}, status=status.HTTP_400_BAD_REQUEST)
-
+    if float(montopedido) < 700:
+        return Response({'message': 'El monto mínimo del préstamo es S/ 700.00'}, status=status.HTTP_400_BAD_REQUEST)
     try:
       cliente = Dcliente.objects.get(pkcliente=pkcliente)
       producto = Dproducto.objects.get(pkproducto=pkproducto)
