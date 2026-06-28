@@ -28,10 +28,28 @@ export async function getCronograma(pkcuentacredito, token) {
   return res.data;
 }
 
-export async function registro(nombre, apellido, tipo_documento, dni, email, password) {
+export async function registro(nombre, apellido, tipo_documento, dni, email, password, pkagencia, ingresosmensual, saldo_inicial) {
   const res = await axios.post(`${API}/registro/`, {
-    nombre, apellido, tipo_documento, dni, email, password
+    nombre, apellido, tipo_documento, dni, email, password,
+    pkagencia, ingresosmensual, saldo_inicial
   });
+  return res.data;
+}
+
+export async function getAgencias() {
+  const res = await axios.get(`${API}/agencias/`);
+  return res.data;
+}
+
+export async function crearSolicitud(pkcliente, montopedido, plazomeses, pkproducto, proposito) {
+  const res = await axios.post(`${API}/homebanking/solicitud/`, {
+    pkcliente, montopedido, plazomeses, pkproducto, proposito
+  });
+  return res.data;
+}
+
+export async function getMisSolicitudes(pkcliente) {
+  const res = await axios.get(`${API}/homebanking/mis-solicitudes/${pkcliente}/`);
   return res.data;
 }
 
@@ -54,16 +72,4 @@ export function cerrarSesion() {
 
 export function haySesion() {
   return !!localStorage.getItem('token');
-}
-
-export async function crearSolicitud(pkcliente, montopedido, plazomeses, pkproducto, proposito) {
-  const res = await axios.post(`${API}/homebanking/solicitud/`, {
-    pkcliente, montopedido, plazomeses, pkproducto, proposito
-  });
-  return res.data;
-}
-
-export async function getMisSolicitudes(pkcliente) {
-  const res = await axios.get(`${API}/homebanking/mis-solicitudes/${pkcliente}/`);
-  return res.data;
 }

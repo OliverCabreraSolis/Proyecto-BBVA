@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registro, guardarSesion } from '../services/authService';
+import { registro, guardarSesion, getAgencias } from '../services/authService';
 import styles from './RegisterPage.module.css';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
@@ -23,14 +23,34 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [exito, setExito] = useState('');
 
-  const [form, setForm] = useState({
+const [form, setForm] = useState({
     nombre: '',
     apellido: '',
     tipo_documento: 'DNI',
     dni: '',
     email: '',
     password: '',
-  });
+    pkagencia: '',
+    ingresosmensual: '',
+    saldo_inicial: '0',
+});
+
+const [agencias, setAgencias] = useState([]);
+
+useEffect(() => {
+  async function cargarAgencias() {
+    try {
+      const data = await getAgencias();
+      setAgencias(data.agencias);
+      if (data.agencias.length > 0) {
+        setForm(prev => ({ ...prev, pkagencia: data.agencias[0].pkagencia }));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  cargarAgencias();
+}, []);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -49,12 +69,15 @@ export default function RegisterPage() {
     setCargando(true);
     try {
       const data = await registro(
-        form.nombre,
-        form.apellido,
-        form.tipo_documento,
-        form.dni,
-        form.email,
-        form.password
+      form.nombre,
+      form.apellido,
+      form.tipo_documento,
+      form.dni,
+      form.email,
+      form.password,
+      form.pkagencia,
+      form.ingresosmensual || 2000,
+      form.saldo_inicial || 0
       );
       guardarSesion(data.token, data.user);
       setExito('¡Cuenta creada exitosamente! Redirigiendo...');
@@ -147,7 +170,49 @@ export default function RegisterPage() {
                 <span className={styles.hint}>Solo números, exactamente 8 dígitos</span>
               )}
             </div>
+            {/* Agencia */}
+            <div className={styles.field}>
+              <label className={styles.label}>Agencia / Sucursal</label>
+              <select
+                className={styles.select}
+                name="pkagencia"
+                value={form.pkagencia}
+                onChange={handleChange}
+              >
+                {agencias.map((ag) => (
+                  <option key={ag.pkagencia} value={ag.pkagencia}>{ag.desagencia}</option>
+                ))}
+              </select>
+            </div>
 
+            {/* Ingresos mensuales */}
+            <div className={styles.field}>
+              <label className={styles.label}>Ingresos mensuales (S/)</label>
+              <input
+                className={styles.input}
+                type="number"
+                name="ingresosmensual"
+                value={form.ingresosmensual}
+                onChange={handleChange}
+                placeholder="Ej: 2500"
+                min="0"
+              />
+            </div>
+
+            {/* Saldo inicial */}
+            <div className={styles.field}>
+              <label className={styles.label}>Depósito inicial (S/) — opcional</label>
+              <input
+                className={styles.input}
+                type="number"
+                name="saldo_inicial"
+                value={form.saldo_inicial}
+                onChange={handleChange}
+                placeholder="0"
+                min="0"
+              />
+              <span className={styles.hint}>Puedes abrir tu cuenta sin depósito inicial</span>
+            </div>  
             <hr className={styles.divider} />
 
             {/* Email */}
