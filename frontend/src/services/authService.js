@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API = 'http://localhost:8000/api/auth';
-
+const API = 'https://bbva-backend-53fb.onrender.com/api/auth';
 // Login original (DNI)
 export async function login(dni, password) {
   const res = await axios.post(`${API}/login/`, { dni, password });
