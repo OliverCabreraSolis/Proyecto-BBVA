@@ -6,6 +6,16 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
 import uuid
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
+class CustomJWTAuthentication(JWTAuthentication):
+    def get_user(self, validated_token):
+        # No necesitamos un objeto User de Django, solo el token validado
+        return type('AnonUser', (), {'is_authenticated': True})()
+
+
 
 from .models import (
     Dcliente, UsuariosHomebanking,
@@ -182,11 +192,18 @@ def login_homebanking(request):
         }
     }, status=status.HTTP_200_OK)
 
-
+from rest_framework.decorators import authentication_classes
 # ─── DASHBOARD CLIENTE ───────────────────────────────────
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@authentication_classes([CustomJWTAuthentication])
+@permission_classes([IsAuthenticated])
 def dashboard_cliente(request, pkcliente):
+    token_pkcliente = request.auth.payload.get('pkcliente')
+    if str(token_pkcliente) != str(pkcliente):
+        return Response(
+            {'message': 'No autorizado para ver este recurso'},
+            status=status.HTTP_403_FORBIDDEN
+        )
     try:
         cuenta = Dcuentaahorro.objects.get(pkcliente=pkcliente)
         saldo = Fcuentaahorro.objects.filter(pkcuentaahorro=cuenta).last()

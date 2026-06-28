@@ -15,7 +15,10 @@ export async function loginHomebanking(username, password) {
 
 // Dashboard cliente
 export async function getDashboard(pkcliente) {
-  const res = await axios.get(`${API}/homebanking/dashboard/${pkcliente}/`);
+  const sesion = obtenerSesion();
+  const res = await axios.get(`${API}/homebanking/dashboard/${pkcliente}/`, {
+    headers: { Authorization: `Bearer ${sesion?.token}` }
+  });
   return res.data;
 }
 
